@@ -28,7 +28,7 @@ void setup(void)
 {
 
   // Set up
-  AudioMemory(150);
+  AudioMemory(250);
 
   // setup capacitive
   if (!cap1.begin(0x5D)) {
@@ -76,7 +76,7 @@ void setup(void)
   }
 
   // setup main mixer
-  mixer_main.gain(0, 0.4);// reduce sound from notes (chords)
+  mixer_main.gain(0, 0.2);// reduce sound from notes (chords)
   mixer_main.gain(1, 2.0);
 
   // setup notes
@@ -144,7 +144,8 @@ void loop() {
   for (uint8_t i=0; i<12; i++) {
     if ((currtouched1 & _BV(i)) && !(lasttouched1 & _BV(i)) ) {
       Serial.print(i); Serial.println(" touched");
-      strum_wavetables[i]->playFrequency(map(i, 0, 23, last_frequency_note*0.5, last_frequency_note*3));
+//      strum_wavetables[i]->playFrequency(map(i, 0, 23, last_frequency_note*0.5, last_frequency_note*3));
+      strum_wavetables[i]->playNote(10+i+int(last_frequency_note/10.0));
     }
     if (!(currtouched1 & _BV(i)) && (lasttouched1 & _BV(i)) ) {
       //Serial.print(i); Serial.println(" released");
@@ -157,7 +158,8 @@ void loop() {
   for (uint8_t i=0; i<12; i++) {
     if ((currtouched2 & _BV(i)) && !(lasttouched2 & _BV(i)) ) {
       Serial.print(i+12); Serial.println(" touched");
-      strum_wavetables[i]->playFrequency(map(i+12, 0, 23, last_frequency_note*0.5, last_frequency_note*3));
+//      strum_wavetables[i]->playFrequency(map(i+12, 0, 23, last_frequency_note*0.5, last_frequency_note*3));
+      strum_wavetables[i+12]->playNote(10+(i+12)+int(last_frequency_note/10.0));
     }
     if (!(currtouched2 & _BV(i)) && (lasttouched2 & _BV(i)) ) {
       //Serial.print(i+12); Serial.println(" released");
